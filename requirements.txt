@@ -4,3 +4,5 @@ python-docx
 pandas
 scikit-learn
 spacy
+PyPDF2
+python-docxs
