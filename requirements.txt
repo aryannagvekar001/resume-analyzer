@@ -1,8 +1,5 @@
-streamlit
-pypdf
-python-docx
-pandas
-scikit-learn
-spacy
+customtkinter
+google-genai
+python-dotenv
 PyPDF2
-python-docxs
+python-docx
