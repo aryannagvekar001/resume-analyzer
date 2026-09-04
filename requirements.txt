@@ -1,11 +1,9 @@
-streamlit
-pypdf
-python-docx
-pandas
-scikit-learn
-spacy
+customtkinter
+google-genai
+python-dotenv
 PyPDF2
 python-docxs
 customtkinter 
 google-genai 
 python-dotenv
+python-docx
