@@ -83,6 +83,7 @@ class UploadView(tk.Frame):
             padx=30,
             pady=(0, 30),
         )
+        self.file_label.pack(anchor="w", padx=30, pady=(12, 8))
 
     def choose_resume(self):
         file_path = filedialog.askopenfilename(
