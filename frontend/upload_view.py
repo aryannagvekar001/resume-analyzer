@@ -1,162 +1,118 @@
-from PySide6.QtWidgets import (
-    QWidget,
-    QVBoxLayout,
-    QLabel,
-    QPushButton,
-    QTextEdit,
-    QFileDialog,
-    QFrame,
-)
+import tkinter as tk
+from pathlib import Path
+from tkinter import filedialog, messagebox
+
+from praser import ParserError, parse_resume
 
 
-class UploadView(QWidget):
+class UploadView(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent, bg="#f5f6fa")
+        self._build_ui()
 
-    def __init__(self):
-        super().__init__()
+    def _build_ui(self):
+        tk.Label(
+            self,
+            text="Upload Resume",
+            font=("Arial", 28, "bold"),
+            bg="#f5f6fa",
+            fg="#172033",
+        ).pack(anchor="w", padx=30, pady=(30, 8))
 
-        self.setup_ui()
+        tk.Label(
+            self,
+            text="Upload your resume in PDF, DOCX, or TXT format.",
+            font=("Arial", 12),
+            bg="#f5f6fa",
+            fg="#64748b",
+        ).pack(anchor="w", padx=30, pady=(0, 20))
 
-    def setup_ui(self):
+        card = tk.Frame(self, bg="white", bd=1, relief="solid")
+        card.pack(fill="x", padx=30, pady=5)
 
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(30, 30, 30, 30)
-        layout.setSpacing(20)
+        tk.Label(
+            card,
+            text="Select your resume\nSupported formats: PDF, DOCX, TXT",
+            font=("Arial", 14),
+            bg="white",
+            fg="#64748b",
+            justify="center",
+        ).pack(pady=(30, 16))
 
-        # Title
-        title = QLabel("Upload Resume")
+        tk.Button(
+            card,
+            text="Choose Resume",
+            command=self.choose_resume,
+            font=("Arial", 11, "bold"),
+            bg="#2563eb",
+            fg="white",
+            activebackground="#1d4ed8",
+            activeforeground="white",
+            relief="flat",
+            padx=18,
+            pady=10,
+            cursor="hand2",
+        ).pack(pady=(0, 30))
 
-        title.setStyleSheet("""
-            QLabel {
-                font-size: 28px;
-                font-weight: bold;
-                color: #172033;
-            }
-        """)
-
-        layout.addWidget(title)
-
-        # Subtitle
-        subtitle = QLabel(
-            "Upload your resume in PDF, DOCX or TXT format"
+        self.file_label = tk.Label(
+            self,
+            text="No resume selected",
+            font=("Arial", 11),
+            bg="#f5f6fa",
+            fg="#64748b",
         )
+        self.file_label.pack(anchor="w", padx=30, pady=(12, 8))
 
-        subtitle.setStyleSheet("""
-            QLabel {
-                font-size: 14px;
-                color: #64748b;
-            }
-        """)
+        tk.Label(
+            self,
+            text="Resume Preview",
+            font=("Arial", 18, "bold"),
+            bg="#f5f6fa",
+            fg="#172033",
+        ).pack(anchor="w", padx=30, pady=(10, 6))
 
-        layout.addWidget(subtitle)
-
-        # Upload Card
-        card = QFrame()
-
-        card.setStyleSheet("""
-            QFrame {
-                background-color: white;
-                border: 1px solid #e5e7eb;
-                border-radius: 12px;
-            }
-        """)
-
-        card_layout = QVBoxLayout(card)
-
-        upload_label = QLabel(
-            "📄\n\n"
-            "Select your resume\n\n"
-            "Supported formats: PDF, DOCX, TXT"
+        self.resume_text = tk.Text(
+            self,
+            font=("Arial", 11),
+            height=16,
+            wrap="word",
         )
-
-        upload_label.setAlignment(
-            Qt.AlignmentFlag.AlignCenter
+        self.resume_text.pack(
+            fill="both",
+            expand=True,
+            padx=30,
+            pady=(0, 30),
         )
-
-        upload_label.setStyleSheet("""
-            QLabel {
-                font-size: 16px;
-                color: #64748b;
-                padding: 30px;
-            }
-        """)
-
-        card_layout.addWidget(upload_label)
-
-        upload_button = QPushButton("Choose Resume")
-
-        upload_button.setStyleSheet("""
-            QPushButton {
-                background-color: #2563eb;
-                color: white;
-                border: none;
-                padding: 12px;
-                border-radius: 7px;
-                font-weight: bold;
-            }
-
-            QPushButton:hover {
-                background-color: #1d4ed8;
-            }
-        """)
-
-        upload_button.clicked.connect(
-            self.choose_resume
-        )
-
-        card_layout.addWidget(upload_button)
-
-        layout.addWidget(card)
-
-        # File name
-        self.file_label = QLabel(
-            "No resume selected"
-        )
-
-        self.file_label.setStyleSheet("""
-            color: #64748b;
-            font-size: 14px;
-        """)
-
-        layout.addWidget(self.file_label)
-
-        # Resume text
-        text_title = QLabel("Resume Preview")
-
-        text_title.setStyleSheet("""
-            font-size: 18px;
-            font-weight: bold;
-        """)
-
-        layout.addWidget(text_title)
-
-        self.resume_text = QTextEdit()
-
-        self.resume_text.setPlaceholderText(
-            "Extracted resume text will appear here..."
-        )
-
-        layout.addWidget(self.resume_text)
-
-        layout.addStretch()
 
     def choose_resume(self):
-
-        file_path, _ = QFileDialog.getOpenFileName(
-            self,
-            "Select Resume",
-            "",
-            "Resume Files (*.pdf *.docx *.txt)"
+        file_path = filedialog.askopenfilename(
+            title="Select Resume",
+            filetypes=[
+                ("Resume files", "*.pdf *.docx *.txt"),
+                ("PDF files", "*.pdf"),
+                ("Word documents", "*.docx"),
+                ("Text files", "*.txt"),
+            ],
         )
 
-        if file_path:
+        if not file_path:
+            return
 
-            self.file_label.setText(
-                f"Selected: {file_path}"
+        try:
+            resume = parse_resume(file_path)
+        except ParserError as error:
+            messagebox.showerror(
+                "Unable to parse resume",
+                str(error),
+                parent=self.winfo_toplevel(),
             )
+            return
 
-            self.resume_text.setText(
-                "Resume selected successfully.\n\n"
-                "File:\n" + file_path +
-                "\n\nResume text extraction will be "
-                "connected to the analyzer backend later."
-            )
+        path = Path(file_path)
+
+        self.file_label.config(text=f"Selected: {path.name}")
+        self.resume_text.delete("1.0", tk.END)
+        self.resume_text.insert("1.0", resume["text"])
+
+        # Stored for future analysis, ATS, skills, and suggestions views.
+        self.winfo_toplevel().current_resume = resume

@@ -1,6 +1,6 @@
 from frontend.ui import ResumeAnalyzerApp
 
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     app = ResumeAnalyzerApp()
     app.mainloop()
