@@ -2,6 +2,8 @@ import tkinter as tk
 from pathlib import Path
 from tkinter import filedialog, messagebox
 
+from praser import ParserError, parse_resume
+
 
 class UploadView(tk.Frame):
     def __init__(self, parent):
@@ -69,8 +71,19 @@ class UploadView(tk.Frame):
             fg="#172033",
         ).pack(anchor="w", padx=30, pady=(10, 6))
 
-        self.resume_text = tk.Text(self, font=("Arial", 11), height=16, wrap="word")
-        self.resume_text.pack(fill="both", expand=True, padx=30, pady=(0, 30))
+        self.resume_text = tk.Text(
+            self,
+            font=("Arial", 11),
+            height=16,
+            wrap="word",
+        )
+        self.resume_text.pack(
+            fill="both",
+            expand=True,
+            padx=30,
+            pady=(0, 30),
+        )
+        self.file_label.pack(anchor="w", padx=30, pady=(12, 8))
 
     def choose_resume(self):
         file_path = filedialog.askopenfilename(
@@ -82,29 +95,25 @@ class UploadView(tk.Frame):
                 ("Text files", "*.txt"),
             ],
         )
+
         if not file_path:
             return
 
+        try:
+            resume = parse_resume(file_path)
+        except ParserError as error:
+            messagebox.showerror(
+                "Unable to parse resume",
+                str(error),
+                parent=self.winfo_toplevel(),
+            )
+            return
+
         path = Path(file_path)
+
         self.file_label.config(text=f"Selected: {path.name}")
         self.resume_text.delete("1.0", tk.END)
+        self.resume_text.insert("1.0", resume["text"])
 
-        if path.suffix.lower() == ".txt":
-            try:
-                self.resume_text.insert("1.0", path.read_text(encoding="utf-8"))
-                return
-            except UnicodeDecodeError:
-                self.resume_text.insert(
-                    "1.0",
-                    path.read_text(encoding="latin-1"),
-                )
-                return
-            except OSError as error:
-                messagebox.showerror("Unable to read resume", str(error))
-                return
-
-        self.resume_text.insert(
-            "1.0",
-            f"Resume selected successfully.\n\nFile: {path}\n\n"
-            "PDF and DOCX text extraction will be connected to the analyzer backend.",
-        )
+        # Stored for future analysis, ATS, skills, and suggestions views.
+        self.winfo_toplevel().current_resume = resume
