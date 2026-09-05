@@ -2,7 +2,7 @@ import tkinter as tk
 from pathlib import Path
 from tkinter import filedialog, messagebox
 
-from praser import ParserError, parse_resume
+from parser import ParserError, parse_resume
 
 
 class UploadView(tk.Frame):
