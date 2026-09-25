@@ -1,6 +1,34 @@
 import re
+
+
 class ResponseParser:
+
     @staticmethod
-    def clean(text): return re.sub(r"```$","",re.sub(r"^```(?:text|markdown)?","",(text or "").strip(),flags=re.I)).strip()
+    def clean(text):
+        text = (text or "").strip()
+
+        text = re.sub(
+            r"^```(?:text|markdown)?",
+            "",
+            text,
+            flags=re.IGNORECASE,
+        )
+
+        text = re.sub(r"```$", "", text)
+
+        return text.strip()
+
     @staticmethod
-    def bullets(text): return [re.sub(r"^[-*•]\s*","",x.strip()) for x in (text or "").splitlines() if x.strip()]
+    def bullets(text):
+        lines = []
+
+        for line in (text or "").splitlines():
+            line = line.strip()
+
+            if not line:
+                continue
+
+            line = re.sub(r"^[-*•]\s*", "", line)
+            lines.append(line)
+
+        return lines
