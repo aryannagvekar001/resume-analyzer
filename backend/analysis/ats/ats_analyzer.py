@@ -20,7 +20,6 @@ class ATSAnalyzer:
             ats_score,
             risks,
         )
-
         return {
             "ats_score": ats_score,
             "risks": risks,
