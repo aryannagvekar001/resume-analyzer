@@ -48,4 +48,8 @@ class ApplicationTracker:
             if item["id"] != application_id
         ]
 
+<<<<<<< HEAD
         return len(self.applications) < before
+=======
+        return len(self.applications) < before
+>>>>>>> ea09b18b8e005edee83c588e73dec1f896c9f6bf

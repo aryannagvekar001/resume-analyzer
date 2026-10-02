@@ -23,4 +23,8 @@ class ImpactAnalyzer:
         return {
             "impact_lines": len(impact_lines),
             "has_impact": bool(impact_lines),
+<<<<<<< HEAD
         }
+=======
+        }
+>>>>>>> ea09b18b8e005edee83c588e73dec1f896c9f6bf

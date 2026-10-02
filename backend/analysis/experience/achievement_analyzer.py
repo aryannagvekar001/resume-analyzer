@@ -22,4 +22,8 @@ class AchievementAnalyzer:
         return {
             "total_lines": len(lines),
             "measurable_lines": len(measurable),
+<<<<<<< HEAD
         }
+=======
+        }
+>>>>>>> ea09b18b8e005edee83c588e73dec1f896c9f6bf

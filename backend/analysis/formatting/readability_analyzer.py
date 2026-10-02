@@ -33,4 +33,8 @@ class ReadabilityAnalyzer:
                 average,
                 2,
             ),
+<<<<<<< HEAD
         }
+=======
+        }
+>>>>>>> ea09b18b8e005edee83c588e73dec1f896c9f6bf

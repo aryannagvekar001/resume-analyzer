@@ -29,4 +29,8 @@ class CertificationAnalyzer:
         return {
             "count": len(matches),
             "certifications": matches,
+<<<<<<< HEAD
         }
+=======
+        }
+>>>>>>> ea09b18b8e005edee83c588e73dec1f896c9f6bf
