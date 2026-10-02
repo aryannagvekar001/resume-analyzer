@@ -1,2 +1,11 @@
 class KeywordRelevance:
-    def calculate(self,matched,job_words): return round(len(set(matched or []))/len(set(job_words or []))*100) if job_words else 0
+
+    def calculate(self, matched, job_words):
+        total = len(set(job_words or []))
+
+        if not total:
+            return 0
+
+        return round(
+            len(set(matched or [])) / total * 100
+        )
