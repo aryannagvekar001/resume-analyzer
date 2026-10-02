@@ -59,4 +59,8 @@ class CareerRecommender:
             "career_roadmap": (
                 self.roadmap.build(primary_role)
             ),
+<<<<<<< HEAD
         }
+=======
+        }
+>>>>>>> ea09b18b8e005edee83c588e73dec1f896c9f6bf

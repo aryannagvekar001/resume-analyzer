@@ -22,4 +22,8 @@ class ResumeVersions:
             if version["id"] == version_id:
                 return version
 
+<<<<<<< HEAD
         return None
+=======
+        return None
+>>>>>>> ea09b18b8e005edee83c588e73dec1f896c9f6bf

@@ -18,4 +18,8 @@ class ExperienceAnalyzer:
             "achievements": self.achievements.analyze(text),
             "bullets": self.bullets.analyze(text),
             "impact": self.impact.analyze(text),
+<<<<<<< HEAD
         }
+=======
+        }
+>>>>>>> ea09b18b8e005edee83c588e73dec1f896c9f6bf

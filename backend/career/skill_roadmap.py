@@ -38,4 +38,8 @@ class SkillRoadmap:
         return {
             "target_role": target_role,
             "roadmap": roadmap,
+<<<<<<< HEAD
         }
+=======
+        }
+>>>>>>> ea09b18b8e005edee83c588e73dec1f896c9f6bf

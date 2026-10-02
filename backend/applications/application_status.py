@@ -23,4 +23,8 @@ class ApplicationStatus:
             if item.lower() == status.lower():
                 return item
 
+<<<<<<< HEAD
         return "Saved"
+=======
+        return "Saved"
+>>>>>>> ea09b18b8e005edee83c588e73dec1f896c9f6bf

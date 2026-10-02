@@ -1,4 +1,3 @@
-# analysis/ats/ats_analyzer.py
 from .ats_score import ATSScore
 from .ats_risk_detector import ATSRiskDetector
 from .ats_compatibility import ATSCompatibility
@@ -6,22 +5,25 @@ from .ats_compatibility import ATSCompatibility
 
 class ATSAnalyzer:
     def __init__(self):
-        self.score_calculator = ATSScore()
-        self.risk_detector = ATSRiskDetector()
-        self.compatibility_checker = ATSCompatibility()
+        self.score = ATSScore()
+        self.risks = ATSRiskDetector()
+        self.compatibility = ATSCompatibility()
 
     def analyze(self, resume_text, job_description=""):
-        ats_score = self.score_calculator.calculate(
+        score = self.score.calculate(
             resume_text,
             job_description,
         )
-        risks = self.risk_detector.detect(resume_text)
-        compatibility = self.compatibility_checker.evaluate(
-            ats_score,
+
+        risks = self.risks.detect(resume_text)
+
+        compatibility = self.compatibility.evaluate(
+            score,
             risks,
         )
+
         return {
-            "ats_score": ats_score,
+            "ats_score": score,
             "risks": risks,
             "compatibility": compatibility,
         }

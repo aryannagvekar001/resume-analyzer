@@ -12,4 +12,8 @@ class FormattingAnalyzer:
         return {
             "readability": self.readability.analyze(text),
             "structure": self.structure.analyze(text),
+<<<<<<< HEAD
         }
+=======
+        }
+>>>>>>> ea09b18b8e005edee83c588e73dec1f896c9f6bf

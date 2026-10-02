@@ -21,4 +21,8 @@ class LinkValidator:
                 for link in links or []
             )
 
+<<<<<<< HEAD
         return result
+=======
+        return result
+>>>>>>> ea09b18b8e005edee83c588e73dec1f896c9f6bf
