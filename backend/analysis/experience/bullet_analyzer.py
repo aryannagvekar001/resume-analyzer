@@ -1,2 +1,19 @@
 class BulletAnalyzer:
-    def analyze(self,text): return {"count":sum(x.strip().startswith(("-","*","•")) for x in (text or "").splitlines())}
+
+    def analyze(self, text):
+        lines = [
+            line.strip()
+            for line in (text or "").splitlines()
+            if line.strip()
+        ]
+
+        bullets = [
+            line
+            for line in lines
+            if line.startswith(("-", "*", "•"))
+        ]
+
+        return {
+            "count": len(bullets),
+            "bullets": bullets,
+        }

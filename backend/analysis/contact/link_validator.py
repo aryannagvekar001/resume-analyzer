@@ -1,2 +1,24 @@
+import re
+
+
 class LinkValidator:
-    def validate(self,links): return {"linkedin":any("linkedin.com/" in x.lower() for x in links or []),"github":any("github.com/" in x.lower() for x in links or [])}
+
+    PATTERNS = {
+        "linkedin": r"linkedin\.com/",
+        "github": r"github\.com/",
+    }
+
+    def validate(self, links):
+        result = {}
+
+        for name, pattern in self.PATTERNS.items():
+            result[name] = any(
+                re.search(
+                    pattern,
+                    link,
+                    re.I,
+                )
+                for link in links or []
+            )
+
+        return result

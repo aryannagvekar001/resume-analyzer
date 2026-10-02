@@ -1,3 +1,26 @@
 import re
+
+
 class ImpactAnalyzer:
-    def analyze(self,text): return {"has_impact":bool(re.search(r"\\d+%|increased|reduced|improved",text or "",re.I))}
+
+    def analyze(self, text):
+        lines = [
+            line
+            for line in (text or "").splitlines()
+            if line.strip()
+        ]
+
+        impact_lines = [
+            line
+            for line in lines
+            if re.search(
+                r"\d+%|\d+\+?|increased|reduced|improved|saved",
+                line,
+                re.I,
+            )
+        ]
+
+        return {
+            "impact_lines": len(impact_lines),
+            "has_impact": bool(impact_lines),
+        }
